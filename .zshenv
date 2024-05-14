@@ -7,3 +7,6 @@ export GOPATH
 # Add go binary path
 PATH="/usr/lib/go-1.22/bin:$PATH"
 export PATH
+
+# Add godot binary path
+PATH="/home/skelemental/godot:$PATH"

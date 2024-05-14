@@ -16,6 +16,9 @@ Plugin 'fatih/vim-go'
 " Rust Support
 Plugin 'rust-lang/rust.vim'
 
+" GDScript Support
+Plugin 'habamax/vim-godot'
+
 " LF
 Plugin 'ptzz/lf.vim'
 Plugin 'voldikss/vim-floaterm'
@@ -56,6 +59,7 @@ filetype plugin indent on    " required
 set background=dark
 set termguicolors
 colorscheme synthwave84
+set relativenumber
 " from my old-ass vimrc
 set ignorecase
 set smartcase
@@ -117,14 +121,43 @@ let g:lightline = {
 " YCM Options
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_key_list_previous_completion = ['<Up>']
+let g:ycm_auto_hover = ''
 
 " YCM Keybinds
 function! YcmKeys()
     nnoremap si :YcmCompleter GoToDefinition<cr>
     nnoremap sk :YcmRestartServer<cr>
     nnoremap <F1> :YcmCompleter FixIt<cr>
-    nnoremap K :YcmCompleter GetDoc<cr>
+    nnoremap K :YcmCompleter GetHover<cr>
     nnoremap ; :YcmCompleter GetType<cr>
+    nmap <leader>k <plug>(YCMHover)
+endfunction
+
+" GDScript Configuration
+function! GDScriptSetup()
+    set noexpandtab
+    call YcmKeys()
+endfunction
+
+if !has_key( g:, 'ycm_language_server' )
+  let g:ycm_language_server = []
+endif
+
+let g:ycm_language_server += [
+  \   {
+  \     'name': 'godot',
+  \     'filetypes': [ 'gdscript' ],
+  \     'project_root_files': [ 'project.godot' ],
+  \     'port': 6005
+  \   }
+  \ ]
+
+let g:godot_executable = '/home/skelemental/godot/godot'
+
+" Golang Configuration
+function! GolangSetup()
+    set noexpandtab
+    call YcmKeys()
 endfunction
 
 augroup rust
@@ -139,11 +172,17 @@ augroup end
 
 augroup go
     autocmd!
-    autocmd FileType go call YcmKeys()
+    autocmd FileType go call GolangSetup()
 augroup end
 
+augroup gdscript
+    autocmd!
+    autocmd FileType gdscript call GDScriptSetup()
+augroup end
+
+
 " Hexokinase Options
-let g:Hexokinase_highlighters = ['sign_column']
+ let g:Hexokinase_highlighters = ['sign_column']
 
 " Ultisnips Options
 noremap <Up> <Nop>

@@ -1,6 +1,8 @@
 # Command Aliases
 alias ls="eza"
-alias dotfiles='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+alias jpull='rclone sync --dry-run remote:/Documents/Logseq /home/skelemental/onedrive/Documents/Logseq'
+alias jpush='rclone sync --dry-run /home/skelemental/onedrive/Documents/Logseq remote:/Documents/Logseq'
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
