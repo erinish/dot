@@ -16,8 +16,8 @@ Plugin 'fatih/vim-go'
 " Rust Support
 Plugin 'rust-lang/rust.vim'
 
-" GDScript Support
-Plugin 'habamax/vim-godot'
+" Puppet Support
+Plugin 'rodjek/vim-puppet'
 
 " LF
 Plugin 'ptzz/lf.vim'
@@ -29,9 +29,6 @@ Plugin 'ycm-core/YouCompleteMe'
 " Snippets
 Plugin 'SirVer/ultisnips'
 
-" Color Code Highlighting
-Plugin 'RRethy/vim-hexokinase'
-
 " Git Integration
 Plugin 'tpope/vim-fugitive'
 
@@ -40,6 +37,9 @@ Plugin 'itchyny/lightline.vim'
 
 " Synthwave Colors
 Plugin 'artanikin/vim-synthwave84'
+
+" Solarized Colors
+Plugin 'lifepillar/vim-solarized8'
 
 
 " All of your Plugins must be added before the following line
@@ -56,9 +56,10 @@ filetype plugin indent on    " required
 "
 " see :h vundle for more details or wiki for FAQ
 " Put your non-Plugin stuff after this line
-set background=dark
+set background=light
 set termguicolors
-colorscheme synthwave84
+colorscheme solarized8
+syntax on
 set relativenumber
 " from my old-ass vimrc
 set ignorecase
@@ -108,7 +109,7 @@ set splitbelow
 set laststatus=2
 set noshowmode
 let g:lightline = {
-      \ 'colorscheme': 'rosepine',
+      \ 'colorscheme': 'solarized',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
@@ -133,32 +134,28 @@ function! YcmKeys()
     nmap <leader>k <plug>(YCMHover)
 endfunction
 
-" GDScript Configuration
-function! GDScriptSetup()
-    set noexpandtab
-    call YcmKeys()
-endfunction
-
-if !has_key( g:, 'ycm_language_server' )
-  let g:ycm_language_server = []
-endif
-
-let g:ycm_language_server += [
-  \   {
-  \     'name': 'godot',
-  \     'filetypes': [ 'gdscript' ],
-  \     'project_root_files': [ 'project.godot' ],
-  \     'port': 6005
-  \   }
-  \ ]
-
-let g:godot_executable = '/home/skelemental/godot/godot'
-
 " Golang Configuration
 function! GolangSetup()
     set noexpandtab
     call YcmKeys()
 endfunction
+
+" Python Configuration
+function! PythonSetup()
+    call YcmKeys()
+    nnoremap K :YcmCompleter GetDoc<cr>
+endfunction
+
+" Shell Configuration
+function! ShellSetup()
+    call YcmKeys()
+    setlocal makeprg=shellcheck
+endfunction
+
+augroup sh
+    autocmd!
+    autocmd FileType sh call ShellSetup()
+augroup end
 
 augroup rust
     autocmd!
@@ -167,7 +164,7 @@ augroup end
 
 augroup python
     autocmd!
-    autocmd FileType python call YcmKeys()
+    autocmd FileType python call PythonSetup()
 augroup end
 
 augroup go

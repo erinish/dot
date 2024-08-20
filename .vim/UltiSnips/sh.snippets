@@ -1,0 +1,79 @@
+# bash snippets
+snippet slog "structured logger ..."
+slog () {
+    # \$1 == message
+    # \$2:\$3 key:value ... repeats
+    if [[ $((\$#%2)) -ne 1 ]]; then
+        echo "slog function requires odd number of arguments"
+    fi
+    message=\$1
+    shift
+    counter=0
+    logline="[$(date)] msg=$message"
+    for arg in "\$@"; do
+        if [[ $((counter%2)) -eq 0 ]]; then
+            logline="\$logline \$arg="
+        else
+            logline="\$logline\$arg"
+        fi
+        counter=\$((counter+1))
+    done
+    echo "$logline"
+}
+endsnippet
+
+snippet usage "usage ..."
+usage () {
+cat << EOF
+usage: \$0 
+
+${1:description}
+
+FLAGS:
+        -h|--help               Show this message.
+EOF
+}
+
+# Parse args
+for arg in "$@"; do
+    case $arg in
+        -h|--help)
+            usage
+            exit 0
+            ;;
+    esac
+done
+endsnippet
+
+snippet scriptdir "absolute path to script directory ..."
+scriptdir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+endsnippet
+
+snippet scriptpath "absolute path to script ..."
+scriptpath="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/$(basename "${BASH_SOURCE[0]}")"
+endsnippet
+
+snippet cmtheader "comment header ..."
+################################################################################
+#                              ${1:description}                                #
+################################################################################
+endsnippet
+
+snippet unsafe_ssh "ssh with brutal options ..."
+unsafe_ssh() {
+	local unsafe_target="\$1"
+	shift
+	local unsafe_cmd="$@"
+
+    ssh -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null" -o "LogLevel=Error" "$unsafe_target" "$unsafe_cmd" 
+}
+endsnippet
+
+snippet unsafe_scp "scp with brutal options ..."
+unsafe_scp() {
+	local unsafe_source="\$1"
+	local unsafe_target="\$2"
+
+    scp -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null" -o "LogLevel=Error" "$unsafe_source" "$unsafe_target" 
+}
+endsnippet

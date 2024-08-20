@@ -1,8 +1,9 @@
 # Command Aliases
-alias ls="eza"
+alias lt="eza -larsnew"
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-alias jpull='rclone sync --dry-run remote:/Documents/Logseq /home/skelemental/onedrive/Documents/Logseq'
-alias jpush='rclone sync --dry-run /home/skelemental/onedrive/Documents/Logseq remote:/Documents/Logseq'
+alias cengine='colima start --vm-type vz --vz-rosetta --network-address'
+alias yl='docker run -it --rm --platform linux/amd64 -v "$(pwd):$(pwd)" --workdir "$(pwd)" docker.rp-core.com/magnite/docker_yamllint:4_main_1ebf9b5'
+alias vlt='docker run -it --rm --platform linux/amd64 --cap-add IPC_LOCK -v "$HOME:/home/vault" -e VAULT_ADDR="$VAULT_ADDR" -e USER="$USER" docker.rp-core.com/hub/vault:1.12.0'
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
@@ -13,9 +14,6 @@ fi
 
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
-
-# Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -85,8 +83,6 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Add wisely, as too many plugins slow down shell startup.
 # plugins=(git)
 
-source $ZSH/oh-my-zsh.sh
-
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
@@ -115,3 +111,4 @@ source $ZSH/oh-my-zsh.sh
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+source ~/powerlevel10k/powerlevel10k.zsh-theme

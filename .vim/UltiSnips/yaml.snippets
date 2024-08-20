@@ -1,0 +1,12 @@
+# go-task stuff
+snippet taskdockerbuild "go-task docker build ..."
+version: '3'
+
+tasks:
+  build:
+    cmds:
+      - docker build . -t ${1:repo/path}:\{\{.GIT_COMMIT\}\}
+    vars:
+      GIT_COMMIT:
+        sh: git describe --tags --abbrev=0
+endsnippet

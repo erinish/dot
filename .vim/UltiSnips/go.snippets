@@ -1,0 +1,81 @@
+# golang snippets
+snippet cobrarootcmd "cobra root command ..."
+package cli
+
+import (
+	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
+)
+
+var (
+	verbose bool
+
+	rootCmd = &cobra.Command{
+		Use:   "${1:mycli}",
+		Short: "${2: a short description}",
+		Long: \`${3: a longer description}\`,
+		PersistentPreRun: func(cmd *cobra.Command, args []string) {
+			var verbose bool
+			verbose = viper.GetBool("verbose")
+
+			if verbose {
+			}
+		},
+	}
+)
+
+func Execute() error {
+	return rootCmd.Execute()
+}
+
+func init() {
+	rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "say more")
+	viper.BindPFlag("verbose", rootCmd.PersistentFlags().Lookup("verbose"))
+}
+endsnippet
+
+snippet cobraversioncmd "cobra version command ..."
+package cli
+
+import (
+  "fmt"
+
+  "github.com/spf13/cobra"
+)
+
+const VERSION = "0.0.0"
+
+func init() {
+  rootCmd.AddCommand(versionCmd)
+}
+
+var versionCmd = &cobra.Command{
+  Use:   "version",
+  Short: "Prints the version",
+  Run: func(cmd *cobra.Command, args []string) {
+    fmt.Println(VERSION)
+  },
+}
+endsnippet
+
+snippet cobrasubcommand "cobra new subcommand ..."
+package cli
+
+import (
+  "fmt"
+
+  "github.com/spf13/cobra"
+)
+
+func init() {
+  rootCmd.AddCommand(${1:new}Cmd)
+}
+
+var ${2:new}Cmd = &cobra.Command{
+  Use:   "${3:new}",
+  Short: "${4:short descrption}",
+  Long: \`${5:long description}\`,
+  Run: func(cmd *cobra.Command, args []string) {
+  },
+}
+endsnippet

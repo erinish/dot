@@ -1,12 +1,7 @@
-. "$HOME/.cargo/env"
-
 # Set go path where I want it
 GOPATH=~/code/go
 export GOPATH
 
-# Add go binary path
-PATH="/usr/lib/go-1.22/bin:$PATH"
+PATH="$HOME/.local/bin:$HOME/.rd/bin:$PATH"
 export PATH
 
-# Add godot binary path
-PATH="/home/skelemental/godot:$PATH"
